@@ -3,7 +3,6 @@
 
 
 import pygame
-import os
 import serial
 import time
 import app.BTConn.EV3BT as EV3BT
