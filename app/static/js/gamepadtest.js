@@ -210,3 +210,21 @@ if (haveEvents) {
 } else {
   setInterval(scangamepads, 500);
 }
+
+var controllerSelection = document.getElementById("SwitchController");
+controllerSelection.addEventListener("click",changeSWController);
+
+
+var controller2Selection = document.getElementById("PS4Controller");
+controller2Selection.addEventListener("click",changePS4Controller);
+
+function changeSWController(){
+  console.log("switch ");
+  socket.emit('change_controller', {data: 0});
+
+}
+function changePS4Controller(){
+  console.log("ps4 ");
+  socket.emit('change_controller', {data: 1});
+
+}

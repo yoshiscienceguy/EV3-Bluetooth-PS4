@@ -14,10 +14,6 @@ To the extent possible under law, the author(s) have dedicated all copyright and
 You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
-   
-<script type="text/javascript" src="./static/js/gamepadtest.js"></script>
 
 </head>
 <body>
@@ -25,7 +21,16 @@ You should have received a copy of the CC0 Public Domain Dedication along with t
   <select id="portSelection" onChange="choosePort();">
     <option selected="true" disabled="disabled" >Choose a Port</option>
   </select>
+  <h3>Controller Type:</h3>
+  <input type="radio" name="controllerid"  id="SwitchController" value="0" checked> Switch
+  <input type="radio" name="controllerid"  id="PS4Controller" value="1" > PS4
   <p id="btconfirmation"></p>
 <h2 id="start">Press a button on your controller to start</h2>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+   
+<script type="text/javascript" src="./static/js/gamepadtest.js"></script>
+
 </html>

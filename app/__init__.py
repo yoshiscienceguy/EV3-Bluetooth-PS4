@@ -4,11 +4,13 @@ from app.BTConn import BTConnection
 
 app = flask.Flask(__name__)
 socketio = SocketIO(app,debug=True,cors_allowed_origins='*',async_mode = None)
-PS4Remote = BTConnection.PS4BT()
+PS4Remote = BTConnection.PS4BT(invert_turn= True)
 #PS4Remote.restartBTService()
 @app.route("/")
 def home_view():
     return flask.render_template("./index.html")
+
+
 
 @socketio.event
 def setPort(port):
@@ -27,7 +29,11 @@ def bt_start(message):
     PS4Remote.close()
     emit("PortInfo",json.dumps(PS4Remote.getPorts()))
     #
-
+@socketio.event
+def change_controller(message):
+    PS4Remote.changeRemote(message)
+    
+    #
 @socketio.event
 def controller(message):
     info = json.loads(message)

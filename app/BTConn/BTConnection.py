@@ -1,19 +1,26 @@
 import serial,subprocess,Tools,time
 import serial.tools.list_ports
 from app.BTConn import EV3BT
+
+
+
+remotes = ["SWITCH","PS4"]
 class PS4BT:
     def __init__(self,COM="",invert_speed = False,invert_turn= True):
         self.INVERT_SPEED = invert_speed
         self.INVERT_TURN = invert_turn
         self.EV3 = None
         self.COM = COM
+        self.remoteType = 0
         #self.startBT(COM)
     def setComPort(self,data):
         
         port = data["data"].split(",")[0].strip()
         self.COM = port
 
-        
+    def changeRemote(self,newRemote):
+        self.remoteType = newRemote["data"]
+        print("New Remote: " + str(self.remoteType))
     def getPorts(self):
         out = []
         for port in serial.tools.list_ports.comports():
@@ -77,13 +84,54 @@ class PS4BT:
             self.EV3.write(s)
             self.close()
         
+        armdirection = 0
         
-        speed =self.scale(float(info["joysticks"]["0"]), (-1,1), (-100,100))
+
+
+        if(self.remoteType == 0):
+            
+            if(info["btns"]["3"] or info["btns"]["5"] or info["btns"]["7"]):
+                armdirection = 100
+            if(info["btns"]["0"] or info["btns"]["4"] or info["btns"]["6"]):
+                armdirection = -100
+                
+            speed =self.scale(float(info["joysticks"]["1"]), (-1,1), (-100,100))
+            turn = self.scale(float(info["joysticks"]["0"]), (-1,1), (-100,100))
+
+            if(speed == 0):
+                speed =self.scale(float(info["joysticks"]["3"]), (-1,1), (-100,100))
+            if(turn == 0):
+                turn = self.scale(float(info["joysticks"]["2"]), (-1,1), (-100,100))
+        
+            if(info["btns"]["13"]):
+                speed = 100
+            if(info["btns"]["12"]):
+                speed = -100
+
+            if(info["btns"]["15"]):
+                turn = 100
+            if(info["btns"]["14"]):
+                turn = -100
+
+            
+        else:
+            speed =self.scale(float(info["joysticks"]["0"]), (-1,1), (-100,100))
+            turn = self.scale(float(info["joysticks"]["1"]), (-1,1), (-100,100))
+
+            #if(info["btns"]["12"]):
+            #    speed = 100
+            #if(info["btns"]["13"]):
+            #    speed = -100
+
+            #if(info["btns"]["14"]):
+            #    turn = 100
+            #if(info["btns"]["15"]):
+            #    turn = -100
 
         if(self.INVERT_SPEED):
             speed *=-1
-        
-        turn = self.scale(float(info["joysticks"]["1"]), (-1,1), (-100,100))
+            
+            
         if(self.INVERT_TURN):
             turn *=-1
     ##    #Dead Zone
@@ -96,6 +144,9 @@ class PS4BT:
         left_dc = self.clamp(-speed+turn)
 
         try:
+            s = EV3BT.encodeMessage(EV3BT.MessageType.Numeric, 'arm', armdirection)
+            self.EV3.write(s)
+
             s = EV3BT.encodeMessage(EV3BT.MessageType.Numeric, 'rightM', right_dc)
             self.EV3.write(s)
 
