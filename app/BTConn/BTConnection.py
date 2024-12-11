@@ -28,11 +28,23 @@ class PS4BT:
             print("No Bluetooth devices found.")
             return []
         
+    def find_com_port_by_mac(self,mac_address):
+
+        print(f"Searching for COM port for device {mac_address}...")
+        ports = serial.tools.list_ports.comports()
+        for port in ports:
+            if mac_address.replace(":", "").upper() in port.hwid.upper():
+                print(f"Found device on {port.device} ({port.description})")
+                return port.device
+        print("No COM port found for the device.")
+        return None
 
     def setComPort(self,data):
         
-        port = data["data"].split(",")[0].strip()
-        self.COM = port
+        #name = data["data"].split(",")[0].strip()
+        mac = data["data"].split(",")[1].strip()
+
+        self.COM = self.find_com_port_by_mac(mac)
 
     def changeRemote(self,newRemote):
         self.remoteType = newRemote["data"]

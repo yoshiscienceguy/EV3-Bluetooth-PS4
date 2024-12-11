@@ -175,6 +175,7 @@ socket.on("PortInfo", (ports) => {
 });
 
 socket.on("BTReady",(data)=>{
+  //diasable dropdown and enable disconnect button
   console.log("bt connected");
   btConnection = true;
   document.getElementById("btconfirmation").innerHTML = "<h3> Bluetooth Connected! </h3><button onClick='closeBTConnection()' >Disconnect</button>";

@@ -15,6 +15,7 @@ def home_view():
 @socketio.event
 def setPort(port):
     PS4Remote.setComPort(port)
+    
     if(PS4Remote.startBT()):
         emit("BTReady",True)
 
