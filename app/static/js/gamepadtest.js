@@ -114,13 +114,35 @@ function updateStatus() {
   rAF(updateStatus);
 }
 
+function scanDevices(){
+  if (!scanning){
+    socket.emit('scan_devices');
+    console.log("updating scanning bluetooth");
+    scanningMode(); 
+  }
+  else{
+    console.log("already scanning");
+  }
+}
+
 
 var btConnection = false;
 var remoteConnection = false;
 var socketConnection = false;
+var refreshButton = document.getElementById("scan_refresh");
+var select = document.getElementById("portSelection");
+
+
+function scanningMode(){
+  scanning = true;
+  refreshButton.disabled = scanning;
+  refreshButton.textContent = "Scanning";
+  select.innerHTML = '';
+
+}
 
 function choosePort(){
-  socket.emit('setPort', {data: document.getElementById("portSelection").options[document.getElementById("portSelection").selectedIndex].value});
+  socket.emit('setPort', {data: select.options[select.selectedIndex].value});
 }
 
 const socket = io(); //socketio connection to server//
@@ -128,15 +150,14 @@ const socket = io(); //socketio connection to server//
 socket.on("connect", () => {
  console.log("connected");
         document.getElementById("header").innerHTML = "<h3>" + "Websocket Connected" + "</h3";
+        
+        scanningMode();
         socket.emit('bt_start', {data: "success"});
         socketConnection = true;
 
 });
 socket.on("PortInfo", (ports) => {
   var options = JSON.parse(ports)
-
-  var select = document.getElementById("portSelection");
-
 
   for(var i = 0; i < options.length; i++) {
       var opt = options[i];
@@ -145,6 +166,12 @@ socket.on("PortInfo", (ports) => {
       el.value = opt;
       select.appendChild(el);
   }
+
+  console.log("done Scanning")
+  
+  scanning = false;
+  refreshButton.disabled = scanning;
+  refreshButton.textContent = "Scan Devices";
 });
 
 socket.on("BTReady",(data)=>{

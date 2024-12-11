@@ -2,7 +2,7 @@ import serial,subprocess,Tools,time
 import serial.tools.list_ports
 from app.BTConn import EV3BT
 
-
+import bluetooth
 
 remotes = ["SWITCH","PS4"]
 class PS4BT:
@@ -13,6 +13,22 @@ class PS4BT:
         self.COM = COM
         self.remoteType = 0
         #self.startBT(COM)
+
+    def scanDevices(self):
+        devices = bluetooth.discover_devices(duration=8, lookup_names=True, flush_cache=True, lookup_class=False)
+    
+        if devices:
+            print("Found {} devices.".format(len(devices)))
+            device_list = []
+            for addr, name in devices:
+                device_list.append(name+","+addr)
+                print("  Device Name: {}, MAC Address: {}".format(name, addr))
+            return device_list
+        else:
+            print("No Bluetooth devices found.")
+            return []
+        
+
     def setComPort(self,data):
         
         port = data["data"].split(",")[0].strip()
@@ -21,6 +37,7 @@ class PS4BT:
     def changeRemote(self,newRemote):
         self.remoteType = newRemote["data"]
         print("New Remote: " + str(self.remoteType))
+
     def getPorts(self):
         out = []
         for port in serial.tools.list_ports.comports():

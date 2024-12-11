@@ -3,17 +3,7 @@
 <head>
 <link rel="stylesheet" href="./static/css/joystick.css">
 <meta charset="utf-8">
-<!--
 
-Gamepad API Test
-
-Written in 2013 by Ted Mielczarek <ted@mielczarek.org>
-
-To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
-
-You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
-
--->
 
 </head>
 <body>
@@ -21,6 +11,7 @@ You should have received a copy of the CC0 Public Domain Dedication along with t
   <select id="portSelection" onChange="choosePort();">
     <option selected="true" disabled="disabled" >Choose a Port</option>
   </select>
+  <button id="scan_refresh" onclick="scanDevices()" disabled>Scan Devices</button>
   <h3>Controller Type:</h3>
   <input type="radio" name="controllerid"  id="SwitchController" value="0" checked> Switch
   <input type="radio" name="controllerid"  id="PS4Controller" value="1" > PS4

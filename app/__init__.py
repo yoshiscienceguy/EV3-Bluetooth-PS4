@@ -23,11 +23,14 @@ def bt_stop(message):
     
     PS4Remote.close()
     print("disconnected")
+@socketio.event
+def scan_devices():
+    emit("PortInfo",json.dumps(PS4Remote.scanDevices()))
 
 @socketio.event
 def bt_start(message):
     PS4Remote.close()
-    emit("PortInfo",json.dumps(PS4Remote.getPorts()))
+    emit("PortInfo",json.dumps(PS4Remote.scanDevices()))
     #
 @socketio.event
 def change_controller(message):
