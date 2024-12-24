@@ -26,7 +26,7 @@ class PS4BT:
             return device_list
         else:
             print("No Bluetooth devices found.")
-            return []
+            return ["No Devices Found, Maybe Bluetooth is off?"]
         
     def find_com_port_by_mac(self,mac_address):
 
