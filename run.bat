@@ -1,4 +1,5 @@
 pip install -r requirements.txt
+pip install git+https://github.com/pybluez/pybluez.git#egg=pybluez
 set FLASK_APP=app
 set FLASK_ENV=development
 set FLASK_DEBUG=True

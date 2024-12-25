@@ -14,4 +14,3 @@ pyserial==3.5
 requests==2.31.0
 urllib3==2.2.1
 Werkzeug==3.0.2
-PyBluez==0.23
