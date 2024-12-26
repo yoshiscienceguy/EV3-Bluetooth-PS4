@@ -5,4 +5,6 @@ mklink irprops.lib bthprops.lib
 
 pip install -r requirements.txt
 pip install setuptools==57.0.0
-pip install pybluez
+tar -x -f pybluez-master.zip
+cd pybluez-master
+python setup.py install
